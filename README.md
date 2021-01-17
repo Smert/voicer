@@ -79,12 +79,6 @@ Configuration
         options: {
             developer_key: '6SQV3DEGQWIXW3R2EDFUMPQCVGOEIBCR'
         }
-    },
-    lookup: {
-        type: 'file',
-        options: {
-            dataFile: 'data/peernames.json'
-        }
     }
 };
 

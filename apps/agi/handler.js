@@ -3,8 +3,7 @@ const uuidv4 = require('uuid/v4');
 const autoBind = require('auto-bind');
 
 class Handler {
-  constructor({source, recognizer, config, logger}) {
-    this.source = source;
+  constructor({recognizer, config, logger}) {
     this.recognizer = recognizer;
     this.config = config;
 
@@ -80,11 +79,6 @@ class Handler {
       return this.recognizer.recognize(file);
     };
 
-    const stepLookup = (text) => {
-      log('stepLookup', text);
-      return this.source.lookup(text);
-    };
-
     const stepFinish = () => {
       log('stepFinish');
       return context.end();
@@ -100,13 +94,13 @@ class Handler {
       return context.streamFile(this.sounds['onErrorBeforeRepeat'], '#');
     };
 
-    const stepSuccess = (object) => {
-      log('stepSuccess', object);
+    const stepSuccess = (text) => {
+      log('stepSuccess', text);
       log('stepSuccess, set ' + this.dialplanVars['status'] + '=SUCCESS');
       return context.setVariable(this.dialplanVars['status'], 'SUCCESS')
           .then(() => {
-            log('stepSuccess, set ' + this.dialplanVars['target'] + '=' + object.target);
-            return context.setVariable(this.dialplanVars['target'], object.target);
+            log('stepSuccess, set ' + this.dialplanVars['text'] + '=' + text);
+            return context.setVariable(this.dialplanVars['text'], text);
           });
     };
 
@@ -123,7 +117,6 @@ class Handler {
             return res;
           })
           .then(stepRecognize)
-          .then(stepLookup)
           .then(stepSuccess)
           .then(stepFinish);
     };

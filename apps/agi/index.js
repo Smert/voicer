@@ -1,10 +1,7 @@
-
 const AGIServer = require('ding-dong');
 const joi = require('@hapi/joi');
 const Handler = require('./handler');
 const Logger = require('./logger');
-
-const SourceFactory = require('./source/sourceFactory');
 const RecognizerFactory = require('./recognize/recognizerFactory');
 
 const configSchema = require('./configSchema');
@@ -25,7 +22,7 @@ const defaults = {
     },
     recognitionDialplanVars: {
       status: 'RECOGNITION_RESULT',
-      target: 'RECOGNITION_TARGET',
+      text: 'RECOGNITION_TEXT',
     },
   },
   record: {
@@ -39,13 +36,7 @@ const defaults = {
     options: {
       developer_key: '6SQV3DEGQWIXW3R2EDFUMPQCVGOEIBCR',
     },
-  },
-  lookup: {
-    type: 'file',
-    options: {
-      dataFile: 'data/peernames.json',
-    },
-  },
+  }
 }
 
 class Server {
@@ -59,9 +50,8 @@ class Server {
     }
 
     const logger = Logger({console: { colorize: true}});
-    const source = (new SourceFactory(this.config['lookup'])).make();
     const recognizer = (RecognizerFactory(this.config['recognize'])).make();
-    const handler = new Handler({source, recognizer, config: this.config, logger});
+    const handler = new Handler({recognizer, config: this.config, logger});
 
     this.agiServer = new AGIServer(handler.handle);
   }

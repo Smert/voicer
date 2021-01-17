@@ -22,7 +22,7 @@ module.exports = {
     },
     recognitionDialplanVars: {
       status: 'RECOGNITION_RESULT',
-      target: 'RECOGNITION_TARGET',
+      text: 'RECOGNITION_TEXT',
     },
   },
   record: {
@@ -36,11 +36,5 @@ module.exports = {
     options: {
       developer_key: '6SQV3DEGQWIXW3R2EDFUMPQCVGOEIBCR',
     },
-  },
-  lookup: {
-    type: 'file',
-    options: {
-      dataFile: 'data/peernames.json',
-    },
-  },
+  }
 };

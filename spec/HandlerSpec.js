@@ -4,15 +4,7 @@ describe('Handler', function() {
   let handler;
   let context;
 
-  const expectedChannel = 'SIP/1234';
   const expectedText = 'Дмитриев';
-
-  const source = {
-    lookup: function(text) {
-      return Promise.resolve(expectedChannel);
-    },
-  };
-
   const recognizer = {
     recognize: function(file) {
       return Promise.resolve(expectedText);
@@ -40,7 +32,7 @@ describe('Handler', function() {
       },
       recognitionDialplanVars: {
         status: 'RECOGNITION_RESULT',
-        target: 'RECOGNITION_TARGET',
+        text: 'RECOGNITION_TEXT',
       },
     },
     record: {
@@ -98,7 +90,7 @@ describe('Handler', function() {
 
   it('standard flow', function(done) {
     context = new Context();
-    handler = new Handler({source, recognizer, config, logger});
+    handler = new Handler({recognizer, config, logger});
 
     handler.handle(context);
     done();

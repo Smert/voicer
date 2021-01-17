@@ -19,7 +19,7 @@ const ConfigSchema = Joi.object().keys({
     }).required(),
     recognitionDialplanVars: Joi.object().keys({
       status: Joi.string().required().default('RECOGNITION_RESULT'),
-      target: Joi.string().required().default('RECOGNITION_TARGET'),
+      text: Joi.string().required().default('RECOGNITION_TEXT'),
     }).required(),
   }).required(),
   record: Joi.object().keys({
@@ -33,15 +33,7 @@ const ConfigSchema = Joi.object().keys({
     options: Joi.object().keys({
       developer_key: Joi.string().required(),
     }).required(),
-  }).required(),
-  lookup: Joi.object().keys({
-    type: Joi.string().required().valid('file').default('file'),
-    options: Joi.alternatives()
-        .when('type', {is: 'file', then: Joi.object().keys({
-          dataFile: Joi.string().required().default('/etc/voicer/peernames.json'),
-        }),
-        }),
-  }).required(),
+  }).required()
 });
 
 module.exports = ConfigSchema;
